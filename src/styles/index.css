@@ -1,0 +1,19 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+@font-face {
+    font-family: 'Inter';
+    src: url('../fonts/Inter-VariableFont_opsz\,wght.ttf');
+}
+
+body {
+    background-color: #1B1C1C;
+    font-family: 'Inter', Arial, Helvetica, sans-serif;
+}
+
+.glow {
+    background-color: rgba(0, 0, 0, 0);
+    box-shadow: 0px 0px 290px 200px rgba(63, 73, 83, 0.15);
+    pointer-events: none;
+}
