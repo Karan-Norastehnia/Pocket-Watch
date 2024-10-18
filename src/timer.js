@@ -1,5 +1,7 @@
 import { useEffect, useState } from "react";
 import sound from "./sounds/alarm.mp3";
+import volumeUp from "./icons/volume_up.js";
+import volumeOff from "./icons/volume_off.js";
 
 const Timer = () => {
     const [defaultTime] = useState(300);
@@ -15,6 +17,18 @@ const Timer = () => {
 
     const [alarmSound] = useState(new Audio(sound));
     const [mute, setMute] = useState(false);
+
+    alarmSound.loop = true;
+
+    const toggleMute = () => {
+        setMute(mute ? false : true);
+
+        if (!mute) {
+            alarmSound.volume = 0.1;
+        } else {
+            alarmSound.volume = 1;
+        }
+    };
 
     const alarm = () => {
         setState(2);
@@ -85,6 +99,13 @@ const Timer = () => {
 
     return (
         <>
+            <svg onClick={toggleMute} fill="#404040" height="44px" width="44px" viewBox="0 -960 960 960" className="transition duration-200 absolute right-8 top-32 cursor-pointer border-2 rounded-3xl border-neutral-900 hover:border-neutral-700">
+                <path d={mute ? volumeOff : volumeUp} />
+            </svg>
+
+            {/* <VolumeUp  onClick={toggleMute} className={"relative" + (mute ? "" : "disable")} />
+            <VolumeOff onClick={toggleMute} className={"bg-red-400" + (mute ? "opacity-100" : "opacity-0")} /> */}
+
             <div>
                 <div className="font-bold text-6xl">
                     <input onKeyDown={ignore} disabled={state > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setHours(setValue(event.target.value, hours))}     value={hours}   className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (state < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
