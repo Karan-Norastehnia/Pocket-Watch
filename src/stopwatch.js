@@ -1,7 +1,7 @@
 import { useEffect, useState } from "react";
 
 const Stopwatch = () => {
-    const [prevTime, setPrevTime] = useState(Date.now);
+    const [prevTime, setPrevTime] = useState(Date.now());
     const [time, setTime] = useState(0);
     const [centiSeconds, setCentiSeconds] = useState("00");
     const [seconds, setSeconds] = useState("00");
@@ -37,8 +37,8 @@ const Stopwatch = () => {
                 setTime(time + dt);
             }
             
-            setMinutes(("0" + (Math.floor(time / 6000) % 60).toString()).slice(-2));
-            setSeconds(("0" + (Math.floor((time / 100) % 60)).toString()).slice(-2));
+            setMinutes(("0" + Math.floor(time / 6000).toString()).slice(-2));
+            setSeconds(("0" + Math.floor((time / 100) % 60).toString()).slice(-2));
             setCentiSeconds(("0" + Math.floor(time % 100).toString()).slice(-2));
 
             setPrevTime(Date.now());
