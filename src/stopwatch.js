@@ -51,9 +51,9 @@ const Stopwatch = () => {
         <>
             <div>
                 <div className="font-bold text-6xl">
-                    <div className="inline-block w-20 ml-4 mr-4">{minutes}</div>
-                    <div className="inline-block w-20 ml-4 mr-4">{seconds}</div>
-                    <div className="inline-block w-20 ml-4 mr-4">{centiSeconds}</div>
+                    <div className="pointer-events-none inline-block w-20 ml-4 mr-4">{minutes}</div>
+                    <div className="pointer-events-none inline-block w-20 ml-4 mr-4">{seconds}</div>
+                    <div className="pointer-events-none inline-block w-20 ml-4 mr-4">{centiSeconds}</div>
                 </div>
             </div>
 
