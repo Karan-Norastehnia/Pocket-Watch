@@ -1,6 +1,62 @@
 import { Outlet, Link, useLocation } from "react-router-dom";
+import { useState, useEffect } from "react";
+import sound from "./sounds/alarm.mp3";
+import volumeUp from "./icons/volume_up.js";
+import volumeOff from "./icons/volume_off.js";
 
 const Layout = () => {
+    const [timerState, setTimerState] = useState(-1);
+    const [timerTime, setTimerTime] = useState(300);
+
+    const [stopwatchState, setStopwatchState] = useState(-1);
+    const [stopwatchTime, setStopwatchTime] = useState(0);
+
+    const [prevTime, setPrevTime] = useState(Date.now());
+
+    const [alarmSound] = useState(new Audio(sound));
+    const [mute, setMute] = useState(false);
+
+    alarmSound.loop = true;
+
+    const toggleMute = () => {
+        setMute(mute ? false : true);
+
+        if (!mute) {
+            alarmSound.volume = 0;
+        } else {
+            alarmSound.volume = 1;
+        }
+    };
+    
+    useEffect(() => {
+        const interval = setInterval(() => {
+            const dt = (Date.now() - prevTime);
+            // console.log(timerState);
+            
+            if (timerState === 1) {
+                setTimerTime(timerTime - (dt / 1000));
+
+                if (timerTime < 1) {
+                    setTimerState(2);
+                }
+            }
+            
+            if (timerState !== 2) {
+                alarmSound.pause();
+            } else {
+                alarmSound.play();
+            }
+            
+            if (stopwatchState === 1) {
+                setStopwatchTime(stopwatchTime + (dt / 10));
+            }
+
+            setPrevTime(Date.now());
+        }, 10);
+
+        return () => clearInterval(interval);
+    });
+
     return (
         <div className="absolute 2xl left-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2 h-3/4">
 
@@ -11,7 +67,11 @@ const Layout = () => {
             </nav>
             
             <div className="bg-neutral-900 text-neutral-300 border-neutral-700 border-2 rounded-3xl px-8 py-24 text-center">
-                <Outlet />
+                <svg onClick={toggleMute} fill="#404040" height="44px" width="44px" viewBox="0 -960 960 960" className="transition duration-200 absolute right-8 top-32 cursor-pointer border-2 rounded-3xl border-neutral-900 hover:border-neutral-700">
+                    <path d={mute ? volumeOff : volumeUp} />
+                </svg>
+
+                <Outlet context={[timerState, setTimerState, timerTime, setTimerTime, stopwatchState, setStopwatchState, stopwatchTime, setStopwatchTime]} />
             </div>
         </div>
     );

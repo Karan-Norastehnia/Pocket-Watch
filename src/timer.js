@@ -1,55 +1,30 @@
+import { useOutletContext } from "react-router-dom";
 import { useEffect, useState } from "react";
-import sound from "./sounds/alarm.mp3";
-import volumeUp from "./icons/volume_up.js";
-import volumeOff from "./icons/volume_off.js";
 
 const Timer = () => {
     const [defaultTime] = useState(300);
     
-    const [prevTime, setPrevTime] = useState(Date.now());
-    const [time, setTime] = useState(defaultTime);
-    const [seconds, setSeconds] = useState("00");
-    const [minutes, setMinutes] = useState("05");
-    const [hours, setHours] = useState("00");
+    const [timerState, setTimerState, timerTime, setTimerTime] = useOutletContext();
 
-    const [state, setState] = useState(-1);
-    const [toggleText, setToggleText] = useState("Start");
+    const [hours, setHours] = useState(("0" + Math.floor((timerTime / 3600)).toString()).slice(-2));
+    const [minutes, setMinutes] = useState(("0" + Math.floor((timerTime / 60) % 60).toString()).slice(-2));
+    const [seconds, setSeconds] = useState(("0" + Math.floor(timerTime % 60).toString()).slice(-2));
 
-    const [alarmSound] = useState(new Audio(sound));
-    const [mute, setMute] = useState(false);
-
-    alarmSound.loop = true;
-
-    const toggleMute = () => {
-        setMute(mute ? false : true);
-
-        if (!mute) {
-            alarmSound.volume = 0.1;
-        } else {
-            alarmSound.volume = 1;
-        }
-    };
-
-    const alarm = () => {
-        setState(2);
-        setToggleText("Stop");
-        alarmSound.play();
-    };
+    const [toggleText, setToggleText] = useState(timerState > 0 ? "Pause" : "Start");
 
     const reset = () => {
-        setState(-1);
-        setTime(defaultTime);
+        setTimerState(-1);
+        setTimerTime(defaultTime);
         normalizeUtility(defaultTime);
         toggle(1);
     };
 
     const toggle = (currentState) => {
         if (currentState > 0) {
-            setState(-1);
+            setTimerState(-1);
             setToggleText("Start");
-            alarmSound.pause();
         } else {
-            setState(1);
+            setTimerState(1);
             setToggleText("Pause");
         }
     };
@@ -60,30 +35,17 @@ const Timer = () => {
         setSeconds(("0" + Math.floor(t % 60).toString()).slice(-2));
     };
 
-    useEffect(() => {
-        const interval = setInterval(() => {
-            const dt = (Date.now() - prevTime) / 1000;
-            
-            if (state === 1) {
-                normalizeUtility(time);
-                setTime(time - dt);
-
-                if (time < 1) {
-                    alarm();
-                }
-            }
-            
-            setPrevTime(Date.now());
-        }, 50);
-
-        return () => clearInterval(interval);
-    });
-
     const normalize = () => {
         const newTime = parseInt(seconds) + parseInt(minutes)*60 + parseInt(hours)*3600;
-        setTime(newTime);
+        setTimerTime(newTime);
         normalizeUtility(newTime);
     };
+
+    useEffect(() => {
+        if (timerState > 0) {
+            normalizeUtility(timerTime);
+        }
+    });
 
     const setValue = (input, current) => {
         let result = (current + input).slice(-2);
@@ -99,24 +61,17 @@ const Timer = () => {
 
     return (
         <>
-            <svg onClick={toggleMute} fill="#404040" height="44px" width="44px" viewBox="0 -960 960 960" className="transition duration-200 absolute right-8 top-32 cursor-pointer border-2 rounded-3xl border-neutral-900 hover:border-neutral-700">
-                <path d={mute ? volumeOff : volumeUp} />
-            </svg>
-
-            {/* <VolumeUp  onClick={toggleMute} className={"relative" + (mute ? "" : "disable")} />
-            <VolumeOff onClick={toggleMute} className={"bg-red-400" + (mute ? "opacity-100" : "opacity-0")} /> */}
-
             <div>
                 <div className="font-bold text-6xl">
-                    <input onKeyDown={ignore} disabled={state > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setHours(setValue(event.target.value, hours))}     value={hours}   className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (state < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
-                    <input onKeyDown={ignore} disabled={state > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setMinutes(setValue(event.target.value, minutes))} value={minutes} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (state < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
-                    <input onKeyDown={ignore} disabled={state > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setSeconds(setValue(event.target.value, seconds))} value={seconds} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (state < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
+                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setHours(setValue(event.target.value, hours))}     value={hours}   className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
+                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setMinutes(setValue(event.target.value, minutes))} value={minutes} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
+                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setSeconds(setValue(event.target.value, seconds))} value={seconds} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
                 </div>
             </div>
 
             <div className="mt-24 flex gap-4 justify-center">
                 <button onClick={reset} className="transition duration-200 py-2 px-12 rounded-3xl border-2 hover:bg-indigo-200 hover:border-indigo-200 hover:text-neutral-700 border-indigo-300">Reset</button>
-                <button onClick={() => toggle(state)} className="transition duration-200 py-2 px-12 rounded-3xl border-2 hover:bg-indigo-200 hover:border-indigo-200 border-indigo-300 bg-indigo-300 text-neutral-700">{toggleText}</button>
+                <button onClick={() => toggle(timerState)} className="transition duration-200 py-2 px-12 rounded-3xl border-2 hover:bg-indigo-200 hover:border-indigo-200 border-indigo-300 bg-indigo-300 text-neutral-700">{toggleText}</button>
             </div>
         </>
     );
