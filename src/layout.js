@@ -5,6 +5,31 @@ import volumeUp from "./icons/volume_up.js";
 import volumeOff from "./icons/volume_off.js";
 
 const Layout = () => {
+    const [clockTime, setClockTime] = useState(null);
+
+    useEffect(() => {
+        const fetchTime = async () => {
+            try {
+                let timeZone;
+
+                try {
+                    timeZone = (Intl.DateTimeFormat().resolvedOptions().timeZone).replace("/", "%2F");
+                } catch (error) {
+                    timeZone = "UTC";
+                }
+
+                const response = await fetch("https://timeapi.io/api/time/current/zone?timeZone=" + timeZone);
+                const data = await response.json();
+                const dateTime = new Date(data.dateTime);
+                setClockTime(dateTime.getHours() * 3600 + dateTime.getMinutes() * 60 + dateTime.getSeconds());
+            } catch (error) {
+                console.error('Failed to fetch time;', error);
+            }
+        };
+
+            fetchTime();
+    }, []);
+
     const [timerState, setTimerState] = useState(-1);
     const [timerTime, setTimerTime] = useState(300);
 
@@ -33,6 +58,8 @@ const Layout = () => {
             const dt = (Date.now() - prevTime);
             // console.log(timerState);
             
+            setClockTime(clockTime + (dt / 1000));
+
             if (timerState === 1) {
                 setTimerTime(timerTime - (dt / 1000));
 
@@ -67,11 +94,11 @@ const Layout = () => {
             </nav>
             
             <div className="bg-neutral-900 text-neutral-300 border-neutral-700 border-2 rounded-3xl px-8 py-24 text-center">
-                <svg onClick={toggleMute} fill="#404040" height="44px" width="44px" viewBox="0 -960 960 960" className="transition duration-200 absolute right-8 top-32 cursor-pointer border-2 rounded-3xl border-neutral-900 hover:border-neutral-700">
+                <svg onClick={toggleMute} fill="#404040" height="40px" width="40px" viewBox="0 -960 960 960" className="transition duration-200 absolute right-8 top-32 cursor-pointer border-2 rounded-3xl border-neutral-900 hover:border-neutral-700">
                     <path d={mute ? volumeOff : volumeUp} />
                 </svg>
 
-                <Outlet context={[timerState, setTimerState, timerTime, setTimerTime, stopwatchState, setStopwatchState, stopwatchTime, setStopwatchTime]} />
+                <Outlet context={[timerState, setTimerState, timerTime, setTimerTime, stopwatchState, setStopwatchState, stopwatchTime, setStopwatchTime, clockTime]} />
             </div>
         </div>
     );
