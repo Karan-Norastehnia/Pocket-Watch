@@ -21,9 +21,10 @@ const Layout = () => {
                 const response = await fetch("https://timeapi.io/api/time/current/zone?timeZone=" + timeZone);
                 const data = await response.json();
                 const dateTime = new Date(data.dateTime);
+
                 setClockTime(dateTime.getHours() * 3600 + dateTime.getMinutes() * 60 + dateTime.getSeconds());
             } catch (error) {
-                console.error('Failed to fetch time;', error);
+                console.error("Failed to fetch time;", error);
             }
         };
 
@@ -87,16 +88,19 @@ const Layout = () => {
     return (
         <div className="absolute 2xl left-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2 h-3/4">
 
-            <nav className="bg-neutral-900 text-neutral-300 border-neutral-700 border-2 rounded-3xl p-1 flex gap-2 justify-center my-6">
-                <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-16 rounded-3xl " + (useLocation().pathname === '/' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/">Clock</Link>
-                <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-16 rounded-3xl " + (useLocation().pathname === '/timer' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/timer">Timer</Link>
-                <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-16 rounded-3xl " + (useLocation().pathname === '/stopwatch' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/stopwatch">Stopwatch</Link>
-            </nav>
-            
-            <div className="bg-neutral-900 text-neutral-300 border-neutral-700 border-2 rounded-3xl px-8 py-24 text-center">
-                <svg onClick={toggleMute} fill="#404040" height="40px" width="40px" viewBox="0 -960 960 960" className="transition duration-200 absolute right-8 top-32 cursor-pointer border-2 rounded-3xl border-neutral-900 hover:border-neutral-700">
+            <div className="flex items-center">
+                <nav className="bg-neutral-900 text-neutral-300 border-neutral-700 border-2 rounded-3xl p-1 flex gap-2 justify-center my-6 mr-3">
+                    <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-16 rounded-3xl " + (useLocation().pathname === '/' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/">Clock</Link>
+                    <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-16 rounded-3xl " + (useLocation().pathname === '/timer' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/timer">Timer</Link>
+                    <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-16 rounded-3xl " + (useLocation().pathname === '/stopwatch' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/stopwatch">Stopwatch</Link>
+                </nav>
+
+                <svg onClick={toggleMute} fill="#404040" height="40px" width="40px" viewBox="0 -960 960 960" className="transition duration-200 cursor-pointer border-2 rounded-3xl border-neutral-900 hover:border-neutral-700">
                     <path d={mute ? volumeOff : volumeUp} />
                 </svg>
+            </div>
+            
+            <div className="bg-neutral-900 text-neutral-300 border-neutral-700 border-2 rounded-3xl px-8 py-24 text-center">
 
                 <Outlet context={[timerState, setTimerState, timerTime, setTimerTime, stopwatchState, setStopwatchState, stopwatchTime, setStopwatchTime, clockTime]} />
             </div>
