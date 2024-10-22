@@ -36,13 +36,13 @@ const Timer = () => {
     };
 
     const normalize = () => {
-        const newTime = parseInt(seconds) + parseInt(minutes)*60 + parseInt(hours)*3600;
+        const newTime = Math.max(0, parseInt(seconds) + parseInt(minutes)*60 + parseInt(hours)*3600);
         setTimerTime(newTime);
         normalizeUtility(newTime);
     };
 
     useEffect(() => {
-        if (timerState > 0) {
+        if (timerState === 1) {
             normalizeUtility(timerTime);
         }
     });
