@@ -42,10 +42,10 @@ const Stopwatch = () => {
     return (
         <>
             <div>
-                <div className="font-bold text-6xl">
-                    <div className="pointer-events-none inline-block w-20 ml-4 mr-4">{minutes}</div>
-                    <div className="pointer-events-none inline-block w-20 ml-4 mr-4">{seconds}</div>
-                    <div className="pointer-events-none inline-block w-20 ml-4 mr-4">{centiSeconds}</div>
+                <div className="font-bold text-6xl flex justify-center overflow-hidden">
+                    <div className="pointer-events-none inline-block w-20 mx-4 text-center">{minutes}</div>
+                    <div className="pointer-events-none inline-block w-20 mx-4 text-center">{seconds}</div>
+                    <div className="pointer-events-none inline-block w-20 mx-4 text-center">{centiSeconds}</div>
                 </div>
             </div>
 

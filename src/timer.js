@@ -62,10 +62,10 @@ const Timer = () => {
     return (
         <>
             <div>
-                <div className="font-bold text-6xl">
-                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setHours(setValue(event.target.value, hours))}     value={hours}   className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
-                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setMinutes(setValue(event.target.value, minutes))} value={minutes} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
-                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setSeconds(setValue(event.target.value, seconds))} value={seconds} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 ml-4 mr-4 " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
+                <div className="font-bold text-6xl flex justify-center overflow-hidden">
+                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setHours(setValue(event.target.value, hours))}     value={hours}   className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 mx-4 text-center " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
+                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setMinutes(setValue(event.target.value, minutes))} value={minutes} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 mx-4 text-center " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
+                    <input onKeyDown={ignore} disabled={timerState > 0 ? "disabled" : ""} onBlur={normalize} onInput={(event) => setSeconds(setValue(event.target.value, seconds))} value={seconds} className={"transition duration-100 bg-neutral-900 border-b-2 outline-none inline-block w-20 mx-4 text-center " + (timerState < 0 ? "border-neutral-700 text-neutral-400" : "border-neutral-900")} />
                 </div>
             </div>
 

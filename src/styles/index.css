@@ -17,3 +17,9 @@ body {
     box-shadow: 0px 0px 290px 200px rgba(63, 73, 83, 0.15);
     pointer-events: none;
 }
+
+@media screen and (max-width: 1024px) {
+    .glow {
+        display: none;
+    }
+}
