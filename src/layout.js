@@ -89,7 +89,7 @@ const Layout = () => {
         <div className="selection:bg-indigo-400 overflow-hidden absolute 2xl left-1/2 -translate-x-1/2 -translate-y-1/2 top-1/2 pt-28 h-full w-full md:w-max">
 
             <div className="absolute left-1/2 bottom-0 -translate-x-1/2 md:translate-x-0 md:static flex items-center justify-center">
-                <nav className="bg-neutral-900 text-neutral-300 border-neutral-700 border-0 md:border-2 rounded-3xl p-1 flex overflow-scroll gap-0 md:gap-2 text-sm md:text-base my-6 mr-3">
+                <nav className="bg-neutral-900 text-neutral-300 border-neutral-700 border-0 md:border-2 rounded-3xl p-1 flex overflow-hidden gap-0 md:gap-2 text-sm md:text-base my-6 mr-3">
                     <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-4 md:px-16 rounded-3xl " + (useLocation().pathname === '/' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/">Clock</Link>
                     <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-4 md:px-16 rounded-3xl " + (useLocation().pathname === '/timer' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/timer">Timer</Link>
                     <Link className={"transition duration-200 border-2 border-neutral-900 py-2 px-4 md:px-16 rounded-3xl " + (useLocation().pathname === '/stopwatch' ? "bg-indigo-200 text-neutral-700" : "hover:border-neutral-700")} to="/stopwatch">Stopwatch</Link>
