@@ -3,6 +3,7 @@ import { useState, useEffect } from "react";
 import sound from "./sounds/alarm.mp3";
 import volumeUp from "./icons/volume_up.js";
 import volumeOff from "./icons/volume_off.js";
+import githubIcon from "./icons/github.svg";
 
 const Layout = () => {
     const [clockTime, setClockTime] = useState(null);
@@ -11,13 +12,13 @@ const Layout = () => {
         const fetchTime = async () => {
             try {
                 let timeZone;
-
+                
                 try {
                     timeZone = (Intl.DateTimeFormat().resolvedOptions().timeZone).replace("/", "%2F");
                 } catch (error) {
                     timeZone = "UTC";
                 }
-
+                
                 const response = await fetch("https://timeapi.io/api/time/current/zone?timeZone=" + timeZone);
                 const data = await response.json();
                 const dateTime = new Date(data.dateTime);
@@ -59,7 +60,9 @@ const Layout = () => {
             const dt = (Date.now() - prevTime);
             // console.log(timerState);
             
-            setClockTime(clockTime + (dt / 1000));
+            if (clockTime !== null) {
+                setClockTime(clockTime + (dt / 1000));
+            }
 
             if (timerState === 1) {
                 setTimerTime(timerTime - (dt / 1000));
@@ -103,6 +106,10 @@ const Layout = () => {
             <div className="bg-neutral-900 text-neutral-300 border-neutral-700 md:border-2 border-0 rounded-3xl md:px-8 px-0 py-24 text-center">
                 <Outlet context={[timerState, setTimerState, timerTime, setTimerTime, stopwatchState, setStopwatchState, stopwatchTime, setStopwatchTime, clockTime]} />
             </div>
+
+            <a href="https://github.com/Karan-Norastehnia/Pocket-Watch" target="_blank" className="absolute bottom-5 hidden md:block left-1/2 -translate-x-1/2 -translate-y-1/2 text-neutral-400" style={{textDecoration: "underline"}}>
+                <img src={githubIcon} width={32} height={32} alt="github"></img>
+            </a>
         </div>
     );
 };
